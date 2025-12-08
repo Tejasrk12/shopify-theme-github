@@ -1,0 +1,175 @@
+{% style %}
+.section-padding {
+  padding: 120px 50px;
+}
+
+.wpo-shop-section .shop-grids {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 30px;
+}
+
+.wpo-shop-section .grid {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  float: none;
+  position: relative;
+  grid-template-columns: auto;
+    grid-auto-columns: auto;
+    grid-template-areas: none;
+}
+
+.wpo-shop-section .grid img {
+  width: 100%;
+}
+
+.wpo-shop-section .details {
+  box-shadow: 0px 2px 10px 2px rgba(21, 44, 88, 0.05);
+  text-align: center;
+  padding: 35px 15px;
+}
+
+.wpo-shop-section .details h3 {
+  font-size: 20px;
+  margin: 0 0 0.5em;
+  font-weight: 700;
+}
+
+.wpo-shop-section .details h3 a {
+  color: #0D0845;
+}
+
+.wpo-shop-section .details del {
+  color: #585858;
+}
+
+.wpo-shop-section .details del + span {
+  display: inline-block;
+  padding-left: 20px;
+}
+
+.wpo-shop-section .add-to-cart {
+  margin-top: 20px;
+}
+
+.wpo-shop-section .add-to-cart button {
+  font-family: "Muli";
+  font-size: 15px;
+  font-weight: 600;
+  color: #CAAB06;
+  padding: 12px 20px;
+  border: 2px solid #CAAB06;
+  display: inline-block;
+  border-radius: 50px;
+  cursor:pointer;
+}
+
+.wpo-shop-section .add-to-cart a i {
+  padding-left: 5px;
+}
+
+.product-badges__badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: #CAAB06;
+  color: #fff;
+  padding: 6px 12px;
+  font-size: 12px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+.hover-image {
+  position: relative;
+  overflow: hidden;
+}
+
+.hover-image img {
+  width: 100%;
+  transition: opacity 0.4s ease;
+}
+
+.hover-image .img-hover {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+}
+
+.hover-image:hover .img-main {
+  opacity: 0;
+}
+
+.hover-image:hover .img-hover {
+  opacity: 1;
+}
+
+{% endstyle %}
+
+{% assign all_products = collections.all.products %}
+
+<section class="wpo-shop-section section-padding">
+  <div class="container">
+    <div class="row">
+    <h2>Shop</h2>
+      <div class="col col-xs-12">
+        <div class="shop-grids clearfix">
+          {% for product in all_products %}
+          <div class="grid">
+            <div class="img-holder hover-image">
+                <a href="{{ product.url }}">
+                    <img class="img-main" src="{{ product.featured_image | img_url: '600x' }}" alt="{{ product.title }}">
+
+                    {% if product.images.size > 1 %}
+                    <img class="img-hover" src="{{ product.images[1] | img_url: '600x' }}" alt="{{ product.title }}">
+                    {% endif %}
+                </a>
+            </div>
+
+
+            <div class="details">
+              <h3><a href="{{ product.url }}">{{ product.title }}</a></h3>
+
+              {% if product.compare_at_price > product.price %}
+                <del>{{ product.compare_at_price | money }}</del>
+              {% endif %}
+              <span>{{ product.price | money }}</span>
+
+              <div class="add-to-cart">
+                <form action="/cart/add" method="post">
+                    <input type="hidden" name="id" value="{{ product.variants.first.id }}">
+                    <button type="submit">Add to cart <i class="ti-shopping-cart"></i></button>
+                </form>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+
+        </div>
+
+        {% comment %} {% paginate all_products by 12 %}
+        <div class="pagination-wrapper pagination-wrapper-center">
+          <ul class="pg-pagination">
+            {% if paginate.previous %}
+              <li><a href="{{ paginate.previous.url }}"><i class="ti-angle-left"></i></a></li>
+            {% endif %}
+
+            {% for part in paginate.parts %}
+              <li class="{% unless part.is_link %}active{% endunless %}">
+                <a href="{{ part.url }}">{{ part.title }}</a>
+              </li>
+            {% endfor %}
+
+            {% if paginate.next %}
+              <li><a href="{{ paginate.next.url }}"><i class="ti-angle-right"></i></a></li>
+            {% endif %}
+          </ul>
+        </div>
+        {% endpaginate %} {% endcomment %}
+
+      </div>
+    </div>
+  </div>
+</section>

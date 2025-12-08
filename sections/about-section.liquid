@@ -1,0 +1,35 @@
+<div class="about-content">
+  <div class="about-text">
+    <p>{{ section.settings.abt_text }}</p>
+  </div>
+  <div class="about-image">
+    <img src="{{ section.settings.image | img_url:'600x600' }}">
+  </div>
+</div>
+
+{% if settings.oucustom_img %}
+  <img src="{{ settings.oucustom_img | img_url : "large" }}">
+{% endif %}
+{% schema %}
+{
+  "name": "About Section",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "About Image"
+    },
+    {
+      "type": "richtext",
+      "id": "abt_text",
+      "label": "About Text"
+    }
+  ],
+  "presets": [
+    {
+      "name": "About Section",
+      "category": "About"
+    }
+  ]
+}
+{% endschema %}

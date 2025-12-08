@@ -1,0 +1,52 @@
+{% style %}
+  .accordion {
+    width: 100%;
+    max-width: 500px;
+    margin: 20px auto;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+  }
+
+  .accordion-item {
+    border-bottom: 1px solid #ddd;
+  }
+
+  .accordion-header {
+    padding: 15px;
+    cursor: pointer;
+    background: #f7f7f7;
+    font-weight: bold;
+  }
+
+  .accordion-content {
+    display: none;
+    padding: 15px;
+    background: #fff;
+  }
+
+  .accordion-content.show {
+    display: block;
+  }
+{% endstyle %}
+
+{% assign faqs = page.metafields.custom.common_faqs.value | sort: "position" %}
+<div class="accordion">
+    {% for faq in faqs %}
+        <div class="accordion-item">
+            <div class="accordion-header">{{ faq.question }}</div>
+            <div class="accordion-content">{{ faq.answer }}</div>
+        </div>
+    {% endfor %}
+</div>
+
+
+<script>
+  document.querySelectorAll('.accordion-header').forEach(header => {
+    header.addEventListener('click', () => {
+      const content = header.nextElementSibling;
+      content.classList.toggle('show');
+    });
+  });
+</script>
+
+

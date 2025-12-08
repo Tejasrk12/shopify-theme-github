@@ -1,0 +1,22 @@
+<div class="row">
+  <div class="container">
+    <h1>{{ page.title }}</h1>
+
+    {% assign article = section.settings.show_article %}
+
+    {{ article.title }}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Special Settings",
+  "settings": [
+    {
+      "type": "article",
+      "id": "show_article",
+      "label": "Select Article"
+    }
+  ]
+}
+{% endschema %}

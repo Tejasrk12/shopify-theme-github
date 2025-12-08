@@ -1,0 +1,75 @@
+<article class="article-wrapper">
+<header class="article-header">
+<h1 class="article-title">{{ article.title }}</h1>
+<p class="article-date">{{ article.published_at | date: "%B %d, %Y" }}</p>
+</header>
+
+
+{% if article.image %}
+<div class="article-featured-image">
+<img src="{{ article.image | img_url: '1200x' }}" alt="{{ article.title }}">
+</div>
+{% endif %}
+
+
+<div class="article-content">
+{{ article.content }}
+</div>
+
+
+{% if article.tags.size > 0 %}
+<div class="article-tags">
+<strong>Tags:</strong>
+{% for tag in article.tags %}
+<a href="{{ blog.url }}/tagged/{{ tag | handle }}" class="article-tag">{{ tag }}</a>
+{% endfor %}
+</div>
+{% endif %}
+
+
+<div class="article-pagination">
+{% if blog.previous_article %}
+<a href="{{ blog.previous_article.url }}" class="prev-article">← Previous</a>
+{% endif %}
+
+
+{% if blog.next_article %}
+<a href="{{ blog.next_article.url }}" class="next-article">Next →</a>
+{% endif %}
+</div>
+</article>
+
+
+<style>
+.article-wrapper {
+max-width: 800px;
+margin: auto;
+padding: 30px 20px;
+}
+.article-title {
+font-size: 2rem;
+margin-bottom: 10px;
+}
+.article-featured-image img {
+width: 100%;
+border-radius: 8px;
+margin: 20px 0;
+}
+.article-content {
+line-height: 1.7;
+font-size: 1.1rem;
+margin-bottom: 30px;
+}
+.article-tags a {
+margin-right: 10px;
+background: #f2f2f2;
+padding: 4px 10px;
+border-radius: 4px;
+font-size: 0.9rem;
+}
+.article-pagination {
+display: flex;
+justify-content: space-between;
+margin-top: 40px;
+}
+</style>

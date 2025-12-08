@@ -1,0 +1,181 @@
+
+{%style %}
+  .section-padding {
+    padding: 120px 50px;
+}
+.wpo-shop-section .shop-grids {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 30px;
+        display: grid;
+}
+.wpo-shop-section .grid {
+    width: 100%;
+    float: none;
+    margin: 0;
+    padding: 0;
+        grid-template-columns: auto;
+    grid-auto-columns: auto;
+    grid-template-areas: none;
+    
+    
+}
+.wpo-shop-section .grid img {
+    width: 100%;
+}
+.wpo-shop-section .details {
+    box-shadow: 0px 2px 10px 2px rgba(21, 44, 88, 0.05);
+    text-align: center;
+    padding: 35px 15px;
+}
+.wpo-shop-section .details h3 {
+    font-size: 20px;
+    font-size: 1.3333333333rem;
+    margin: 0 0 0.5em;
+    font-weight: 700;
+}
+.wpo-shop-section .details h3 a {
+    color: #0D0845;
+}
+.wpo-shop-section .details del {
+    color: #585858;
+}
+.wpo-shop-section .details del + span {
+    display: inline-block;
+    padding-left: 20px;
+}
+.wpo-shop-section .add-to-cart {
+    margin-top: 20px;
+}
+.wpo-shop-section .add-to-cart a {
+    font-family: "Muli";
+    font-size: 15px;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #CAAB06;
+    padding: 12px 20px;
+    border: 2px solid #CAAB06;
+    display: inline-block;
+    border-radius: 50px;
+}
+.wpo-shop-section .add-to-cart a i {
+    font-size: 15px;
+    font-size: 1rem;
+    display: inline-block;
+    padding-left: 5px;
+}
+.ti-shopping-cart:before {
+    content: "\e60d";
+}
+.wpo-shop-section .grid {
+    position: relative;
+}
+
+.product-badges__badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: #CAAB06;
+    color: #fff;
+    padding: 6px 12px;
+    font-size: 12px;
+    border-radius: 4px;
+    z-index: 5;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+{% endstyle %}
+<section class="wpo-shop-section section-padding">
+  <div class="container">
+    <div class="row">
+      <div class="col col-xs-12">
+        <div class="shop-grids clearfix">
+
+          {% for block in section.blocks %}
+            {% assign product = all_products[block.settings.product] %}
+            {% if product %}
+            <div class="grid">
+              <div
+                class="
+                  product-badges__badge product-badges__badge--rectangle
+                  {% if product.available == false %} color-{{ settings.badge_sold_out_color_scheme }}{% elsif product.compare_at_price > product.price %} color-{{ settings.badge_sale_color_scheme }}{% endif %}
+                "
+              >
+                {%- if product.available == false -%}
+                  {{ 'content.product_badge_sold_out' | t }}
+                {%- elsif product.compare_at_price > product.price -%}
+                  {{ 'content.product_badge_sale' | t }}
+                {%- endif -%}
+              </div>
+              <div class="img-holder">
+                <a href="{{ product.url }}">
+                  <img src="{{ product.featured_image | img_url: '600x' }}" alt="{{ product.title }}">
+                </a>
+              </div>
+              <div class="details">
+                <h3>
+                  <a href="{{ product.url }}">{{ product.title }}</a>
+                </h3>
+
+                {% if product.compare_at_price > product.price %}
+                  <del>{{ product.compare_at_price | money }}</del>
+                {% endif %}
+                <span>{{ product.price | money }}</span>
+
+                <div class="add-to-cart">
+                  <form method="post" action="/cart/add">
+                    <input type="hidden" name="id" value="{{ product.variants.first.id }}">
+                    <a href="{{ product.url }}">Add to cart</a>
+                  </form>
+                </div>
+              </div>
+            </div>
+            {% endif %}
+          {% endfor %}
+
+        </div>
+
+        {% if section.settings.enable_pagination %}
+        <div class="pagination-wrapper pagination-wrapper-center">
+          {{ paginate | default_pagination }}
+        </div>
+        {% endif %}
+
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Shop Grid",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "enable_pagination",
+      "label": "Enable Pagination",
+      "default": false
+    }
+  ],
+  "blocks": [
+    {
+      "type": "product_item",
+      "name": "Product Item",
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Select product"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 50,
+  "presets": [
+    {
+      "name": "Shop Grid Sections",
+      "category": "Products"
+    }
+  ]
+}
+{% endschema %}

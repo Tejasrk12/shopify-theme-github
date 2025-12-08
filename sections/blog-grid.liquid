@@ -1,0 +1,56 @@
+<div class="blog-grid-wrapper">
+  <div class="blog-grid">
+    {% for article in blog.articles %}
+      <article class="blog-card">
+        {% if article.image %}
+          <a href="{{ article.url }}" class="blog-card-image">
+            <img src="{{ article.image | img_url: '720x' }}" alt="{{ article.title }}">
+          </a>
+        {% endif %}
+
+        <div class="blog-card-content">
+          <h2 class="blog-card-title">
+            <a href="{{ article.url }}">{{ article.title }}</a>
+          </h2>
+
+          <p class="blog-card-excerpt">
+            {{ article.content | strip_html | truncate: 140 }}
+          </p>
+
+          <a href="{{ article.url }}" class="blog-card-readmore">Read more →</a>
+        </div>
+      </article>
+    {% endfor %}
+  </div>
+</div>
+
+{% style %}
+  .blog-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  }
+  .blog-card {
+  border: 1px solid #e5e5e5;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #fff;
+  }
+  .blog-card-image img {
+  width: 100%;
+  height: auto;
+  display: block;
+  }
+  .blog-card-content {
+  padding: 16px;
+  }
+  .blog-card-title {
+  font-size: 1.4rem;
+  margin-bottom: 0.5rem;
+  }
+  .blog-card-readmore {
+  margin-top: 0.75rem;
+  display: inline-block;
+  font-weight: bold;
+  }
+{% endstyle %}

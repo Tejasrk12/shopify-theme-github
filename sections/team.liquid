@@ -1,0 +1,65 @@
+    <section class="team">
+    <h2>Meet Our Team</h2>
+    <!-- sections/team-members.liquid -->
+    <div class="team-members">
+    {% for block in section.blocks %}
+        <div class="member" {{ block.shopify_attributes }}>
+            <img  src="{{ block.settings.image | img_url: '600x400' }}"  alt="{{ block.settings.alt_text | escape }}" >
+            <h3>{{ block.settings.name }}</h3>
+            <p>{{ block.settings.role }}</p>
+        </div>
+    {% endfor %}
+    </div>
+  </section>
+    
+    {% schema %}
+{
+  "name": "Team Members",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "member",
+      "name": "Team Member",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Team Member Image"
+        },
+        {
+          "type": "text",
+          "id": "alt_text",
+          "label": "Alt Text",
+          "default": "Team Member"
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Name",
+          "default": "Sam Wilson"
+        },
+        {
+          "type": "text",
+          "id": "role",
+          "label": "Role",
+          "default": "Marketing Head"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Team Members",
+      "category": "Team",
+      "blocks": [
+        {
+          "type": "member"
+        },
+        {
+          "type": "member"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
