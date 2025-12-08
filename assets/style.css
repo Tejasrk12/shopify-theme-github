@@ -1,4 +1,2 @@
 .header__columns.header__columns {grid-template-columns: minmax(max-content, 1fr);}
 header-menu {display: flex;justify-content: center;}
-
-body{background-color: red;}
